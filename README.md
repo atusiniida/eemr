@@ -39,8 +39,11 @@ head(res[, c("id", "pvalue", "nSeedGenes", "nModuleGenes")])
 activity <- module_activity(expr, res)
 ```
 
-See [`inst/examples/run_test.R`](inst/examples/run_test.R) for a full example
-using the bundled sample dataset (`inst/extdata/test.tab`, `test.gmt`).
+See [`inst/examples/run_test.R`](https://github.com/atusiniida/eemr/blob/main/inst/examples/run_test.R)
+for a full example using the bundled sample dataset
+(`inst/extdata/test.tab`, `test.gmt`), or the
+["Getting started"](https://atusiniida.github.io/eemr/articles/eemr.html)
+vignette for a walkthrough.
 
 ## Functions
 
