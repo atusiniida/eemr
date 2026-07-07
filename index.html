@@ -38,6 +38,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/atusiniida/eemr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -52,12 +53,10 @@
 <div class="section level2">
 <h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
 </h2>
-<p>This repository is private, so <code>remotes</code>/<code>devtools</code> need a GitHub token with access to it. The easiest way is to reuse the <a href="https://cli.github.com/" class="external-link">GitHub CLI</a>’s token if you’re already logged in (<code>gh auth login</code>):</p>
+<p>This repository is public, so no GitHub token is needed:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>GITHUB_PAT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"gh auth token"</span>, intern <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># install.packages("remotes")  # if not already installed</span></span>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")  # if not already installed</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"atusiniida/eemr"</span><span class="op">)</span></span></code></pre></div>
-<p>Alternatively, set <code>GITHUB_PAT</code> to a <a href="https://github.com/settings/tokens" class="external-link">personal access token</a> with <code>repo</code> scope (e.g. in <code>~/.Renviron</code>).</p>
 <p>If you have a local clone instead:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"path/to/eemr"</span><span class="op">)</span></span></code></pre></div>
@@ -66,7 +65,7 @@
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">eemr</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/atusiniida/eemr" class="external-link">eemr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="st">"expr.tab"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                              sep <span class="op">=</span> <span class="st">"\t"</span>, check.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
@@ -79,7 +78,7 @@
 <span><span class="co"># module's genes), restricted by default to modules with pvalue &gt;= 6</span></span>
 <span><span class="co"># (-log10 scale, i.e. p &lt; 1e-6)</span></span>
 <span><span class="va">activity</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/module_activity.html">module_activity</a></span><span class="op">(</span><span class="va">expr</span>, <span class="va">res</span><span class="op">)</span></span></code></pre></div>
-<p>See <a href="inst/examples/run_test.R"><code>inst/examples/run_test.R</code></a> for a full example using the bundled sample dataset (<code>inst/extdata/test.tab</code>, <code>test.gmt</code>).</p>
+<p>See <a href="https://github.com/atusiniida/eemr/blob/main/inst/examples/run_test.R" class="external-link"><code>inst/examples/run_test.R</code></a> for a full example using the bundled sample dataset (<code>inst/extdata/test.tab</code>, <code>test.gmt</code>), or the <a href="https://atusiniida.github.io/eemr/articles/eemr.html">“Getting started”</a> vignette for a walkthrough.</p>
 </div>
 <div class="section level2">
 <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
@@ -94,11 +93,19 @@
 </ul>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/atusiniida/eemr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/atusiniida/eemr/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></small></li>
+<li><small>GPL (&gt;= 3)</small></li>
 </ul>
 </div>
 

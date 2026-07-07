@@ -6,6 +6,16 @@ gene sets, eem_search() finds coherently expressed subsets of each gene
 set ("expression modules") and assigns them a significance p-value based
 on a permutation test.
 
+## See also
+
+Useful links:
+
+- <https://github.com/atusiniida/eemr>
+
+- <https://atusiniida.github.io/eemr/>
+
+- Report bugs at <https://github.com/atusiniida/eemr/issues>
+
 ## Author
 
 **Maintainer**: Atsushi Niida <atusiniida@gmail.com>

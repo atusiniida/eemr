@@ -52,10 +52,15 @@ and `ncol(expr)` columns (named by `colnames(expr)`).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+expr_file <- system.file("extdata", "test.tab", package = "eemr")
+gmt_file  <- system.file("extdata", "test.gmt", package = "eemr")
+expr <- as.matrix(read.table(expr_file, header = TRUE, row.names = 1,
+                              sep = "\t", check.names = FALSE))
+geneSets <- read_gmt(gmt_file)
 res <- eem_search(expr, geneSets)
 activity <- module_activity(expr, res)
+dim(activity)
+#> [1]   7 118
 # only keep modules significant at p < 0.01 (-log10(0.01) = 2)
 activity <- module_activity(expr, res, pvalueCutoff = -log10(0.01))
-} # }
 ```

@@ -79,11 +79,18 @@ ids collapsed with `";"`), sorted by decreasing `pvalue`.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-set.seed(1)
-expr <- matrix(rnorm(200 * 10), nrow = 200,
-                dimnames = list(paste0("g", 1:200), paste0("s", 1:10)))
-geneSets <- list(setA = paste0("g", 1:20), setB = paste0("g", sample(200, 20)))
-eem_search(expr, geneSets)
-} # }
+expr_file <- system.file("extdata", "test.tab", package = "eemr")
+gmt_file  <- system.file("extdata", "test.gmt", package = "eemr")
+expr <- as.matrix(read.table(expr_file, header = TRUE, row.names = 1,
+                              sep = "\t", check.names = FALSE))
+geneSets <- read_gmt(gmt_file)
+res <- eem_search(expr, geneSets)
+head(res[, c("id", "pvalue", "nSeedGenes", "nModuleGenes")])
+#>                             id    pvalue nSeedGenes nModuleGenes
+#> 1                      SPINDLE 14.809837         10           10
+#> 2     MICROTUBULE_CYTOSKELETON 11.518622         18           11
+#> 3            CYTOSKELETAL_PART  9.007283         26           11
+#> 4                 CYTOSKELETON  7.872272         34           11
+#> 5 NON_MEMBRANE_BOUND_ORGANELLE  7.646947         40           12
+#> 6               ORGANELLE_PART  6.781448         57           13
 ```

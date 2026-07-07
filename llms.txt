@@ -10,21 +10,13 @@ temp files, no CLI binary).
 
 ## Install
 
-This repository is private, so `remotes`/`devtools` need a GitHub token
-with access to it. The easiest way is to reuse the [GitHub
-CLI](https://cli.github.com/)’s token if you’re already logged in
-(`gh auth login`):
+This repository is public, so no GitHub token is needed:
 
 ``` r
 
-Sys.setenv(GITHUB_PAT = system("gh auth token", intern = TRUE))
 # install.packages("remotes")  # if not already installed
 remotes::install_github("atusiniida/eemr")
 ```
-
-Alternatively, set `GITHUB_PAT` to a [personal access
-token](https://github.com/settings/tokens) with `repo` scope (e.g. in
-`~/.Renviron`).
 
 If you have a local clone instead:
 
@@ -53,9 +45,11 @@ activity <- module_activity(expr, res)
 ```
 
 See
-[`inst/examples/run_test.R`](https://atusiniida.github.io/eemr/inst/examples/run_test.R)
+[`inst/examples/run_test.R`](https://github.com/atusiniida/eemr/blob/main/inst/examples/run_test.R)
 for a full example using the bundled sample dataset
-(`inst/extdata/test.tab`, `test.gmt`).
+(`inst/extdata/test.tab`, `test.gmt`), or the [“Getting
+started”](https://atusiniida.github.io/eemr/articles/eemr.html) vignette
+for a walkthrough.
 
 ## Functions
 

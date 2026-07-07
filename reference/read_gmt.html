@@ -23,6 +23,7 @@ suitable for eem_search."></head><body>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/atusiniida/eemr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -32,7 +33,7 @@ suitable for eem_search."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Read a GMT gene set file</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/atusiniida/eemr/blob/HEAD/R/eem_search.R" class="external-link"><code>R/eem_search.R</code></a></small>
       <div class="d-none name"><code>read_gmt.Rd</code></div>
     </div>
 
@@ -60,6 +61,62 @@ suitable for <code><a href="eem_search.html">eem_search</a></code>.</p>
     <p>a named list of character vectors (gene set id -&gt; gene ids).</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">gmt_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"test.gmt"</span>, package <span class="op">=</span> <span class="st">"eemr"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">geneSets</span> <span class="op">&lt;-</span> <span class="fu">read_gmt</span><span class="op">(</span><span class="va">gmt_file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">geneSets</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
+<span class="r-in"><span><span class="va">geneSets</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "HNRPK"    "XRCC6"    "INTS1"    "INTS2"    "MED23"    "MED22"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [7] "ZNF638"   "INTS3"    "HDAC7A"   "MED21"    "ISG20"    "INTS9"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [13] "EPC1"     "INTS8"    "INTS5"    "INTS4"    "MED26"    "INTS7"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [19] "FOXF1"    "INTS6"    "FOXF2"    "U2AF1"    "GIT2"     "PITX2"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [25] "IKBKAP"   "MCRS1"    "POLI"     "POLH"     "PTBP1"    "MED12"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [31] "MED11"    "MED14"    "MED13"    "TAF6L"    "PPARGC1A" "HTATIP"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [37] "PPARGC1B" "SFRS2"    "MED16"    "MED17"    "MED18"    "LRCH4"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] "SUDS3"    "CPSF3L"   "MRE11A"   "FIGLA"    "CHEK2"    "COIL"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [49] "NKX2-1"   "NUP54"    "WDHD1"    "POLQ"     "NKX2-5"   "YEATS4"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [55] "SUB1"     "RTCD1"    "PHB"      "TP53BP1"  "SMAD4"    "NXF3"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61] "SMAD2"    "C19orf2"  "PMF1"     "HNRNPA1"  "JAZF1"    "SRrp35"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [67] "CHAF1A"   "CHAF1B"   "NUAK2"    "ELF4"     "EZH2"     "NAP1L1"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [73] "BNIP3"    "NAP1L3"   "NAP1L2"   "NAP1L4"   "RPS19BP1" "ZNF350"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [79] "ASH2L"    "ZNF148"   "TOP2B"    "CCNO"     "TOP2A"    "ZNF281"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] "TFIP11"   "PRPF31"   "SYMPK"    "RBBP5"    "SNAPC4"   "PTF1A"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [91] "GTF2H4"   "TP53"     "APTX"     "NDUFA13"  "TTF2"     "GTF2H1"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [97] "MED6"     "TAF11"    "TAF10"    "MED7"     "MED4"     "TAF13"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [103] "TAF12"    "MED8"     "RUVBL2"   "RBM39"    "RUVBL1"   "CLOCK"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [109] "MED1"     "POLR2E"   "POLR2L"   "POLR2J"   "SHFM1"    "POLA1"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [115] "PML"      "NUFIP1"   "ZBTB16"   "POLR2D"   "POLR2B"   "POLR2A"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [121] "GATAD2A"  "ACTL6B"   "ACTL6A"   "POLR3G"   "POLR3H"   "POLR3K"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [127] "HCLS1"    "TRIM27"   "PHF12"    "APPL1"    "POLR3C"   "APPL2"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [133] "NARG1"    "PHF21A"   "MPHOSPH1" "OGG1"     "RBM14"    "CIR"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [139] "FOXE3"    "C1orf124" "NCBP1"    "XPO1"     "LMO4"     "TBP"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [145] "CBX1"     "SETX"     "TOP1"     "CDKN2A"   "SMARCD2"  "OIP5"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [151] "SMARCD3"  "SMARCD1"  "EED"      "CIB1"     "MLL2"     "MYO6"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [157] "RELA"     "FMR1"     "HDAC10"   "TOPBP1"   "ARID1A"   "HDAC11"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [163] "ARID1B"   "ARNTL"    "HES6"     "SP140"    "ELL2"     "SUZ12"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [169] "RPAIN"    "HIF1A"    "SMARCE1"  "SMARCA5"  "EDF1"     "SLU7"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [175] "SMARCA2"  "SMARCA4"  "TRRAP"    "HNRNPL"   "SMARCB1"  "TAF9"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [181] "ASF1A"    "TAF2"     "TAF1"     "TAF4"     "TAF6"     "EPAS1"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [187] "TAF5"     "TAF8"     "SPTBN4"   "TAF7"     "SAP18"    "INTS12"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [193] "WRN"      "INTS10"   "HDAC5"    "ATF6"     "HDAC4"    "HDAC3"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [199] "HDAC2"    "PPIG"     "GCM1"     "HDAC1"    "CDKN2AIP" "SMARCC1" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [205] "GTF2F1"   "SMARCC2"  "DYRK1A"   "MYO16"    "WDR4"     "TDG"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [211] "HDAC9"    "HDAC8"    "HDAC6"    "RSF1"     "ARID4A"   "NR6A1"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [217] "MKI67IP"  "TIMM50"   "MEN1"     "SAP30"    "MCM7"     "DKC1"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [223] "NARG1L"   "PAX8"     "ELP4"     "ELP3"     "ELP2"     "SP100"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [229] "CDK8"     "CDK9"     "UBE2I"    "RB1"      "IFI16"    "TOPORS"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [235] "NCR1"     "HMGA1"    "CD3EAP"   "CCDC55"   "HIPK2"    "NCOA6"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [241] "CPSF6"    "MDM2"     "CPSF3"    "KPNA2"    "CPSF1"    "FUSIP1"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [247] "NUP98"    "ING2"     "GLIS2"    "NFYC"     "NFYB"     "NFYA"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [253] "IVNS1ABP" "RPA1"     "ERCC5"    "NPAS2"    "ERCC6"    "NUDT21"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [259] "GTF3C6"   "GTF3C5"   "SFRS2IP"  "ERCC3"    "GTF3C2"   "GEMIN6"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [265] "GTF3C1"   "GEMIN7"   "GTF3C4"   "ERCC2"    "GTF3C3"   "GEMIN5"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [271] "ACTB"     "ATXN1"    "PPP1R9B"  "MPG"      "ATXN3"    "MED30"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [277] "THRAP3"   "PRM1"     "PRM2"    </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
