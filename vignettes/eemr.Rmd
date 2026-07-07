@@ -1,0 +1,123 @@
+---
+title: "Getting started with eemr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with eemr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Background
+
+**eemr** is an R/Rcpp binding for the original *eemCpp* command-line tool. It
+implements coherence-based expression module (EEM) search: given an
+expression matrix and a collection of candidate gene sets (e.g. from MSigDB),
+it finds, for each gene set, the largest subset of genes whose expression is
+coherent across samples (an "expression module"), and assigns that module a
+significance p-value based on a randomization test. It's conceptually similar
+to gene set enrichment analysis, but the "signal" being tested is coherence
+of expression rather than differential expression, and only the coherent
+subset of each gene set is retained.
+
+The whole pipeline runs in memory from R -- no intermediate files, no
+external CLI binary.
+
+```{r setup}
+library(eemr)
+```
+
+## Input data
+
+`eem_search()` takes two inputs:
+
+* `expr`: a numeric matrix of expression values, genes in rows (with
+  rownames), samples in columns.
+* `geneSets`: a named list of character vectors of gene ids, one entry per
+  candidate gene set. `read_gmt()` reads these from a standard GMT file (as
+  used by MSigDB/GSEA: one gene set per line, tab-delimited, columns are
+  id, description, gene1, gene2, ...).
+
+This package bundles a small real dataset (1000 genes x 118 breast cancer
+samples, and 100 candidate GMT gene sets) for examples and testing:
+
+```{r load-data}
+expr_file <- system.file("extdata", "test.tab", package = "eemr")
+gmt_file  <- system.file("extdata", "test.gmt", package = "eemr")
+
+expr <- as.matrix(read.table(expr_file, header = TRUE, row.names = 1,
+                              sep = "\t", check.names = FALSE))
+geneSets <- read_gmt(gmt_file)
+
+dim(expr)
+length(geneSets)
+```
+
+## Running the search
+
+```{r eem-search, results = "hide"}
+res <- eem_search(expr, geneSets)
+```
+
+The result is a data.frame with one row per gene set that passed the search,
+sorted by decreasing `pvalue` (more significant first):
+
+```{r show-results}
+head(res[, c("id", "pvalue", "pvalue1", "pvalue2",
+             "nSeedGenes", "nModuleGenes")], 10)
+```
+
+* `pvalue1` is an approximate, hypergeometric-based p-value used to screen
+  candidate gene sets cheaply.
+* `pvalue2` is the accurate, permutation-based p-value, calculated only for
+  gene sets that pass the `pvalue1Cutoff` screen (`-1` means it wasn't
+  calculated).
+* `pvalue` is the one actually reported (`pvalue2` when available, otherwise
+  `pvalue1`).
+* All three are on the -log10 scale, so larger values are more significant.
+* `seedGenes`/`moduleGenes` list the gene set's original genes and the
+  coherent subset found by the search (`;`-separated).
+
+Key parameters (see `?eem_search`):
+
+* `relativeRadius`: target fraction of all genes that fall within the
+  module search radius (default `0.05`).
+* `pvalue1Cutoff`: -log10 cutoff used to screen candidates before the
+  accurate p-value is calculated (default `-log10(0.05)`); use `-1` to
+  disable screening.
+* `itr`: number of permutations for the accurate p-value (default `300`).
+
+## Module activity matrix
+
+Once you have modules, `module_activity()` turns them into a module x sample
+matrix, useful for downstream analyses (clustering samples, correlating with
+clinical variables, etc.). For each module it averages the (row-standardized,
+by default) expression of its `moduleGenes` across samples:
+
+```{r module-activity}
+activity <- module_activity(expr, res)
+dim(activity)
+activity[1:5, 1:5]
+```
+
+By default only modules with `pvalue >= 6` (-log10 scale, i.e. p < 1e-6) are
+included; pass `pvalueCutoff = NULL` to include every module in `res`, or any
+other -log10 threshold:
+
+```{r module-activity-cutoff}
+nrow(module_activity(expr, res, pvalueCutoff = NULL))
+nrow(module_activity(expr, res, pvalueCutoff = 10))
+```
+
+A quick look at how the top modules' activity varies across samples:
+
+```{r heatmap, fig.width = 7, fig.height = 5}
+heatmap(activity, scale = "none", margins = c(2, 12),
+        labCol = FALSE, main = "Module activity")
+```

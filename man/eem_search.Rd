@@ -63,11 +63,11 @@ available, otherwise \code{pvalue1}); all p-values are on the -log10
 scale, so larger values are more significant.
 }
 \examples{
-\dontrun{
-set.seed(1)
-expr <- matrix(rnorm(200 * 10), nrow = 200,
-                dimnames = list(paste0("g", 1:200), paste0("s", 1:10)))
-geneSets <- list(setA = paste0("g", 1:20), setB = paste0("g", sample(200, 20)))
-eem_search(expr, geneSets)
-}
+expr_file <- system.file("extdata", "test.tab", package = "eemr")
+gmt_file  <- system.file("extdata", "test.gmt", package = "eemr")
+expr <- as.matrix(read.table(expr_file, header = TRUE, row.names = 1,
+                              sep = "\t", check.names = FALSE))
+geneSets <- read_gmt(gmt_file)
+res <- eem_search(expr, geneSets)
+head(res[, c("id", "pvalue", "nSeedGenes", "nModuleGenes")])
 }

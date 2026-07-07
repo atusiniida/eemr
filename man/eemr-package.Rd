@@ -8,6 +8,15 @@
 \description{
 R bindings (via Rcpp) for the eemCpp coherence-based expression module search tool. Given an expression matrix and a collection of candidate gene sets, eem_search() finds coherently expressed subsets of each gene set ("expression modules") and assigns them a significance p-value based on a permutation test.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/atusiniida/eemr}
+  \item \url{https://atusiniida.github.io/eemr/}
+  \item Report bugs at \url{https://github.com/atusiniida/eemr/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Atsushi Niida \email{atusiniida@gmail.com}
 

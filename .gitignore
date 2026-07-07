@@ -5,3 +5,5 @@ src/eem/*.o
 src/utility/*.o
 .DS_Store
 *.Rcheck/
+inst/doc
+docs

@@ -8,8 +8,14 @@ Description: R bindings (via Rcpp) for the eemCpp coherence-based expression
     candidate gene sets, eem_search() finds coherently expressed subsets of
     each gene set ("expression modules") and assigns them a significance
     p-value based on a permutation test.
-License: GPL-3
+License: GPL (>= 3)
+URL: https://github.com/atusiniida/eemr, https://atusiniida.github.io/eemr/
+BugReports: https://github.com/atusiniida/eemr/issues
 Encoding: UTF-8
 LinkingTo: Rcpp
 Imports: Rcpp
 Config/roxygen2/version: 8.0.0
+Suggests:
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

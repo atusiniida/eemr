@@ -17,3 +17,9 @@ Reads a tab-delimited GMT file (as used by MSigDB/GSEA: one gene set per
 line, columns are id, description, gene1, gene2, ...) into a named list
 suitable for \code{\link{eem_search}}.
 }
+\examples{
+gmt_file <- system.file("extdata", "test.gmt", package = "eemr")
+geneSets <- read_gmt(gmt_file)
+length(geneSets)
+geneSets[[1]]
+}
