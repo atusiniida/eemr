@@ -8,8 +8,23 @@ without leaving R (no temp files, no CLI binary).
 
 ## Install
 
+This repository is private, so `remotes`/`devtools` need a GitHub token with
+access to it. The easiest way is to reuse the [GitHub CLI](https://cli.github.com/)'s
+token if you're already logged in (`gh auth login`):
+
 ```r
-# from a local clone
+Sys.setenv(GITHUB_PAT = system("gh auth token", intern = TRUE))
+# install.packages("remotes")  # if not already installed
+remotes::install_github("atusiniida/eemr")
+```
+
+Alternatively, set `GITHUB_PAT` to a
+[personal access token](https://github.com/settings/tokens) with `repo` scope
+(e.g. in `~/.Renviron`).
+
+If you have a local clone instead:
+
+```r
 devtools::install("path/to/eemr")
 ```
 
