@@ -1,0 +1,15 @@
+Package: eemr
+Type: Package
+Title: Coherence-Based Expression Module (EEM) Search
+Version: 0.1.0
+Authors@R: person("Atsushi", "Niida", email = "atusiniida@gmail.com", role = c("aut", "cre"))
+Description: R bindings (via Rcpp) for the eemCpp coherence-based expression
+    module search tool. Given an expression matrix and a collection of
+    candidate gene sets, eem_search() finds coherently expressed subsets of
+    each gene set ("expression modules") and assigns them a significance
+    p-value based on a permutation test.
+License: GPL-3
+Encoding: UTF-8
+LinkingTo: Rcpp
+Imports: Rcpp
+Config/roxygen2/version: 8.0.0

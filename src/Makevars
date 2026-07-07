@@ -1,0 +1,22 @@
+CXX_STD = CXX11
+
+PKG_CPPFLAGS = -I.
+
+OBJECTS = eemr_wrap.o RcppExports.o \
+	eem/AbstractEEMsearch.o \
+	eem/AbstractGeneSetAnalysis.o \
+	eem/CoherenceBasedEEM.o \
+	eem/CoherenceBasedEEMsearch.o \
+	eem/DistConverter.o \
+	eem/EEM.o \
+	eem/EEMsearch.o \
+	eem/ExpressionModule.o \
+	eem/ExpressionModuleSet.o \
+	eem/GeneSetAnalysis.o \
+	utility/Date.o \
+	utility/Dist.o \
+	utility/HypergeometricDistributionImpl.o \
+	utility/MyException.o \
+	utility/MyFunc.o \
+	utility/MyMat.o \
+	utility/StopWatch.o
