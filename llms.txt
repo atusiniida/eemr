@@ -1,0 +1,88 @@
+# eemr
+
+R bindings (via Rcpp) for the original **eemCpp** coherence-based
+expression module (EEM) search tool. Given an expression matrix and a
+collection of candidate gene sets,
+[`eem_search()`](https://atusiniida.github.io/eemr/reference/eem_search.md)
+finds the coherently expressed subset of each gene set (“expression
+module”) and assigns it a significance p-value, without leaving R (no
+temp files, no CLI binary).
+
+## Install
+
+This repository is private, so `remotes`/`devtools` need a GitHub token
+with access to it. The easiest way is to reuse the [GitHub
+CLI](https://cli.github.com/)’s token if you’re already logged in
+(`gh auth login`):
+
+``` r
+
+Sys.setenv(GITHUB_PAT = system("gh auth token", intern = TRUE))
+# install.packages("remotes")  # if not already installed
+remotes::install_github("atusiniida/eemr")
+```
+
+Alternatively, set `GITHUB_PAT` to a [personal access
+token](https://github.com/settings/tokens) with `repo` scope (e.g. in
+`~/.Renviron`).
+
+If you have a local clone instead:
+
+``` r
+
+devtools::install("path/to/eemr")
+```
+
+## Usage
+
+``` r
+
+library(eemr)
+
+expr <- as.matrix(read.table("expr.tab", header = TRUE, row.names = 1,
+                              sep = "\t", check.names = FALSE))
+geneSets <- read_gmt("genesets.gmt")
+
+res <- eem_search(expr, geneSets)
+head(res[, c("id", "pvalue", "nSeedGenes", "nModuleGenes")])
+
+# module x sample activity matrix (mean row-standardized expression of each
+# module's genes), restricted by default to modules with pvalue >= 6
+# (-log10 scale, i.e. p < 1e-6)
+activity <- module_activity(expr, res)
+```
+
+See
+[`inst/examples/run_test.R`](https://atusiniida.github.io/eemr/inst/examples/run_test.R)
+for a full example using the bundled sample dataset
+(`inst/extdata/test.tab`, `test.gmt`).
+
+## Functions
+
+- `eem_search(expr, geneSets, ...)` — run the EEM search
+- `read_gmt(file)` — read a GMT gene set file into a named list
+- `module_activity(expr, result, normalize = TRUE, pvalueCutoff = 6)` —
+  build a module x sample activity matrix from
+  [`eem_search()`](https://atusiniida.github.io/eemr/reference/eem_search.md)
+  results
+
+# Package index
+
+## All functions
+
+- [`eem_search()`](https://atusiniida.github.io/eemr/reference/eem_search.md)
+  : Coherence-based Expression Module (EEM) search
+- [`eemr`](https://atusiniida.github.io/eemr/reference/eemr-package.md)
+  [`eemr-package`](https://atusiniida.github.io/eemr/reference/eemr-package.md)
+  : eemr: Coherence-Based Expression Module Search
+- [`module_activity()`](https://atusiniida.github.io/eemr/reference/module_activity.md)
+  : Compute a module x sample activity matrix
+- [`read_gmt()`](https://atusiniida.github.io/eemr/reference/read_gmt.md)
+  : Read a GMT gene set file
+
+# Articles
+
+### All vignettes
+
+- [Getting started with
+  eemr](https://atusiniida.github.io/eemr/articles/eemr.md):
