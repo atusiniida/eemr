@@ -80,21 +80,46 @@ external CLI binary.</p>
 <div class="section level2">
 <h2 id="input-data">Input data<a class="anchor" aria-label="anchor" href="#input-data"></a>
 </h2>
-<p><code><a href="../reference/eem_search.html">eem_search()</a></code> takes two inputs:</p>
-<ul>
-<li>
-<code>expr</code>: a numeric matrix of expression values, genes in
-rows (with rownames), samples in columns.</li>
-<li>
-<code>geneSets</code>: a named list of character vectors of gene
-ids, one entry per candidate gene set. <code><a href="../reference/read_gmt.html">read_gmt()</a></code> reads
-these from a standard GMT file (as used by MSigDB/GSEA: one gene set per
-line, tab-delimited, columns are id, description, gene1, gene2, …).</li>
-</ul>
+<p><code><a href="../reference/eem_search.html">eem_search()</a></code> takes two inputs, already loaded into R:
+<code>expr</code>, a numeric matrix, and <code>geneSets</code>, a named
+list of character vectors. Both are commonly distributed as plain-text
+files, so this package bundles a small real example of each and provides
+<code><a href="../reference/read_gmt.html">read_gmt()</a></code> to read the gene set file.</p>
+<div class="section level3">
+<h3 id="expression-matrix--tab">Expression matrix (<code>.tab</code>)<a class="anchor" aria-label="anchor" href="#expression-matrix--tab"></a>
+</h3>
+<p>A tab-delimited text file: the first line is a header giving the
+sample names (with an empty first field), and each following line is one
+gene – its name, then one tab-separated numeric value per sample:</p>
+<pre><code>    sample1 sample2 sample3
+GENE1   4.68    5.37    13.16
+GENE2   4.72    10.36   12.11</code></pre>
+<p>This is exactly the format read by
+<code>read.table(file, header = TRUE, row.names = 1, sep = "\t", check.names = FALSE)</code>,
+which is how the bundled <code>test.tab</code> is loaded below.
+<code>check.names = FALSE</code> keeps sample names that aren’t valid R
+identifiers (e.g. starting with a digit) unchanged. The result is
+coerced to a plain numeric <code>matrix</code> with
+<code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix()</a></code> because <code><a href="../reference/eem_search.html">eem_search()</a></code> requires a
+matrix, not a data.frame.</p>
+</div>
+<div class="section level3">
+<h3 id="gene-sets--gmt">Gene sets (<code>.gmt</code>)<a class="anchor" aria-label="anchor" href="#gene-sets--gmt"></a>
+</h3>
+<p>A tab-delimited GMT file, the format used by MSigDB/GSEA: one gene
+set per line, with the gene set id, a description (unused here, but
+required by the format – <code>"na"</code> if you don’t have one), and
+then one gene id per remaining field:</p>
+<pre><code>GENE_SET_1  na  GENE1   GENE2   GENE3
+GENE_SET_2  na  GENE4   GENE5   GENE6   GENE7</code></pre>
+<p><code>read_gmt(file)</code> reads this into a named list, e.g.
+<code>list(GENE_SET_1 = c("GENE1", "GENE2", "GENE3"), ...)</code>,
+suitable for <code><a href="../reference/eem_search.html">eem_search()</a></code>’s <code>geneSets</code>
+argument.</p>
 <p>This package bundles a small real dataset (1000 genes x 118 breast
 cancer samples, and 100 candidate GMT gene sets) for examples and
 testing:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">expr_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"test.tab"</span>, package <span class="op">=</span> <span class="st">"eemr"</span><span class="op">)</span></span>
 <span><span class="va">gmt_file</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"test.gmt"</span>, package <span class="op">=</span> <span class="st">"eemr"</span><span class="op">)</span></span>
 <span></span>
@@ -107,15 +132,16 @@ testing:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">geneSets</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 100</span></span></code></pre></div>
 </div>
+</div>
 <div class="section level2">
 <h2 id="running-the-search">Running the search<a class="anchor" aria-label="anchor" href="#running-the-search"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eem_search.html">eem_search</a></span><span class="op">(</span><span class="va">expr</span>, <span class="va">geneSets</span><span class="op">)</span></span></code></pre></div>
 <p>The result is a data.frame with one row per gene set that passed the
 search, sorted by decreasing <code>pvalue</code> (more significant
 first):</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"pvalue"</span>, <span class="st">"pvalue1"</span>, <span class="st">"pvalue2"</span>,</span>
 <span>             <span class="st">"nSeedGenes"</span>, <span class="st">"nModuleGenes"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                    id    pvalue   pvalue1   pvalue2 nSeedGenes</span></span>
@@ -182,7 +208,7 @@ a module x sample matrix, useful for downstream analyses (clustering
 samples, correlating with clinical variables, etc.). For each module it
 averages the (row-standardized, by default) expression of its
 <code>moduleGenes</code> across samples:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">activity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/module_activity.html">module_activity</a></span><span class="op">(</span><span class="va">expr</span>, <span class="va">res</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">activity</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]   7 118</span></span>
@@ -197,14 +223,14 @@ averages the (row-standardized, by default) expression of its
 scale, i.e. p &lt; 1e-6) are included; pass
 <code>pvalueCutoff = NULL</code> to include every module in
 <code>res</code>, or any other -log10 threshold:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/module_activity.html">module_activity</a></span><span class="op">(</span><span class="va">expr</span>, <span class="va">res</span>, pvalueCutoff <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 23</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/module_activity.html">module_activity</a></span><span class="op">(</span><span class="va">expr</span>, <span class="va">res</span>, pvalueCutoff <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2</span></span></code></pre></div>
 <p>A quick look at how the top modules’ activity varies across
 samples:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/heatmap.html" class="external-link">heatmap</a></span><span class="op">(</span><span class="va">activity</span>, scale <span class="op">=</span> <span class="st">"none"</span>, margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">12</span><span class="op">)</span>,</span>
 <span>        labCol <span class="op">=</span> <span class="cn">FALSE</span>, main <span class="op">=</span> <span class="st">"Module activity"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="eemr_files/figure-html/heatmap-1.png" class="r-plt" alt="" width="672"></p>

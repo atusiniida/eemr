@@ -24,16 +24,47 @@ library(eemr)
 ## Input data
 
 [`eem_search()`](https://atusiniida.github.io/eemr/reference/eem_search.md)
-takes two inputs:
+takes two inputs, already loaded into R: `expr`, a numeric matrix, and
+`geneSets`, a named list of character vectors. Both are commonly
+distributed as plain-text files, so this package bundles a small real
+example of each and provides
+[`read_gmt()`](https://atusiniida.github.io/eemr/reference/read_gmt.md)
+to read the gene set file.
 
-- `expr`: a numeric matrix of expression values, genes in rows (with
-  rownames), samples in columns.
-- `geneSets`: a named list of character vectors of gene ids, one entry
-  per candidate gene set.
-  [`read_gmt()`](https://atusiniida.github.io/eemr/reference/read_gmt.md)
-  reads these from a standard GMT file (as used by MSigDB/GSEA: one gene
-  set per line, tab-delimited, columns are id, description, gene1,
-  gene2, …).
+### Expression matrix (`.tab`)
+
+A tab-delimited text file: the first line is a header giving the sample
+names (with an empty first field), and each following line is one gene –
+its name, then one tab-separated numeric value per sample:
+
+        sample1 sample2 sample3
+    GENE1   4.68    5.37    13.16
+    GENE2   4.72    10.36   12.11
+
+This is exactly the format read by
+`read.table(file, header = TRUE, row.names = 1, sep = "\t", check.names = FALSE)`,
+which is how the bundled `test.tab` is loaded below.
+`check.names = FALSE` keeps sample names that aren’t valid R identifiers
+(e.g. starting with a digit) unchanged. The result is coerced to a plain
+numeric `matrix` with
+[`as.matrix()`](https://rdrr.io/r/base/matrix.html) because
+[`eem_search()`](https://atusiniida.github.io/eemr/reference/eem_search.md)
+requires a matrix, not a data.frame.
+
+### Gene sets (`.gmt`)
+
+A tab-delimited GMT file, the format used by MSigDB/GSEA: one gene set
+per line, with the gene set id, a description (unused here, but required
+by the format – `"na"` if you don’t have one), and then one gene id per
+remaining field:
+
+    GENE_SET_1  na  GENE1   GENE2   GENE3
+    GENE_SET_2  na  GENE4   GENE5   GENE6   GENE7
+
+`read_gmt(file)` reads this into a named list, e.g.
+`list(GENE_SET_1 = c("GENE1", "GENE2", "GENE3"), ...)`, suitable for
+[`eem_search()`](https://atusiniida.github.io/eemr/reference/eem_search.md)’s
+`geneSets` argument.
 
 This package bundles a small real dataset (1000 genes x 118 breast
 cancer samples, and 100 candidate GMT gene sets) for examples and
